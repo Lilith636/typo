@@ -48,7 +48,7 @@ describe Admin::ContentController do
       response.should render_template('index')
       response.should be_success
     end
-    
+
     it 'should restrict to withdrawn articles' do
       article = Factory(:article, :state => 'withdrawn', :published_at => '2010-01-01')
       get :index, :search => {:state => 'withdrawn'}
@@ -56,7 +56,7 @@ describe Admin::ContentController do
       response.should render_template('index')
       response.should be_success
     end
-  
+
     it 'should restrict to withdrawn articles' do
       article = Factory(:article, :state => 'withdrawn', :published_at => '2010-01-01')
       get :index, :search => {:state => 'withdrawn'}
@@ -483,6 +483,12 @@ describe Admin::ContentController do
 
     describe 'edit action' do
 
+      it 'should allow article merging' do
+      #TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        get :edit, :id => @article.id
+        response.body.should contain("Merge Articles")
+      end
+
       it 'should edit article' do
         get :edit, 'id' => @article.id
         response.should render_template('new')
@@ -624,10 +630,17 @@ describe Admin::ContentController do
 
     describe 'edit action' do
 
+      it 'should not allow article merging' do
+      # TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        get :edit, :id => @article.id
+        response.body.should_not contain("Merge Articles")
+      end
+
       it "should redirect if edit article doesn't his" do
         get :edit, :id => Factory(:article, :user => Factory(:user, :login => 'another_user')).id
         response.should redirect_to(:action => 'index')
       end
+
 
       it 'should edit article' do
         get :edit, 'id' => @article.id
