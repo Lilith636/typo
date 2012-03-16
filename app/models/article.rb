@@ -427,8 +427,7 @@ class Article < Content
 
       # migrate comments
       self.comments.each do |comment|
-        #puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-        #puts comment.article
+
         comment.article = similarArticle
         comment.save
       end
@@ -436,10 +435,8 @@ class Article < Content
       # but keep original author only
 
       # delete other article
-      #Article.find_by_id(self.id).delete
       self.delete
     end
-    #Article.find_by_id(self.id)
   end
 
   protected
